@@ -5,12 +5,10 @@ roslaunch neato_2dnav hector_mapping_neato.launch
 rosrun rviz rviz
 rosrun teleop_twist_keyboard teleop_twist_keyboard.py
 
-<<<<<<< HEAD
+
 after getting complete map:
 rosrun  map_server map_saver -f ~/mymap2
 
-=======
->>>>>>> parent of 502d550... Marena set up
 
 changed fixed frame to map (instead of odom)
 add (bottom of page), by topic, map
