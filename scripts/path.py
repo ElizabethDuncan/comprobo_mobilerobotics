@@ -15,7 +15,7 @@ class pathNavigation:
 		except:
 			print "error receiving map"
 
-		# self.map = pickle.load( open( "exampleArray.p", "rb" ) )
+		self.map = pickle.load( open( "exampleArray.p", "rb" ) )
 
 
 
