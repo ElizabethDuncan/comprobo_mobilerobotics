@@ -5,6 +5,10 @@ import rospy
 from geometry_msgs.msg import Twist, Vector3
 from nav_msgs.srv import GetMap
 
+# run roscore
+# run rosrun map_server map_serr /home/jackfan108/comprobo2014/mobile_robotics/starmap.yaml
+
+
 rospy.wait_for_service("static_map")
 static_map = rospy.ServiceProxy("static_map", GetMap)
 try:
@@ -24,12 +28,12 @@ for i in range(2048):
 		d = data[2048*i+k]
 		#print type(d)
 		if d == -1:
-			map_vis[i,k] = [255,0,0]
+			map_vis[i,k] = [128,128,128]
 		elif d == 0:
-			map_vis[i,k] = [0,255,0]
+			map_vis[i,k] = [0,0,0]
 		else:
 			print d
-			map_vis[i,k] = [0,0,255]
+			map_vis[i,k] = [255,255,255]
 #print map_vis
 #print data
 img = smp.toimage( map_vis )
