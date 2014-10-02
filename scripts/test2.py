@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import numpy as np
 import scipy.misc.pilutil as smp
 import pickle
@@ -28,7 +29,7 @@ for i in range(2048):
 		elif d == 0:
 			map_vis[i,k] = [0,255,0]
 		else:
-			print d
+			#print d
 			map_vis[i,k] = [0,0,255]
 #print map_vis
 #print data

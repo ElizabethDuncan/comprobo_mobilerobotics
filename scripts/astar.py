@@ -1,3 +1,8 @@
+class Node():
+  def __init__(self):
+    pass
+
+
 class Queue():
   def __init__(self):
     self.array = []
