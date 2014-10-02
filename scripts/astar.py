@@ -1,56 +1,44 @@
 #!/usr/bin/python
+visited = set([])
 
-class Node(parent, x, y):
-  def __init__(self):
-    self.x = x
-    self.y = y
+class Node():
+  def __init__(self, parent, pixels):
+    self.pixels = pixels
+    self.coords = convert_to_m(pixels)
     self.parent = parent
     if self.parent != None:
-      self.parent.assign_child(child)
+      self.parent.assign_child(self)
     self.children = []
 
   def return_parent(self):
     return self.parent
 
+  def return_full_path(self):
+    path = []
+    while self.parent != None:
+      path.append(self.parent.pixels)
+      self = self.parent
+    return path
+
   def assign_child(self, child):
     self.children.append(child)
 
-class Queue():
-  def __init__(self):
-    self.array = []
+  def convert_to_m(self):
+    constant = .05
+    width = 102.4
+    return (self.pixels[0] * constant - width, self.pixels[1] * constant - width)
 
-  def push(self, element):
-    self.array.append(element)
-
-  def pop(self):
-    return self.array.pop(0)
-
-  def peek(self):
-    if self.array:
-      return self.array[0]
-    else:
-      return None
+def make_tree(start_pixels):
+  #Get all pixels next to root
+  #root = Node(None, )
+  pass
 
 
-def bfs(graph, start, path = []):
-  queue = Queue()
-  queue.push(start)
-  while queue.peek():
-    v = queue.pop()
-    if v not in path:
-      path.append(v)
-      expand_node(v, graph, queue)
-  return path
+root = Node(None, (-51, -51))
+next_right = Node(root,(-54, -55))
+next_left = Node(root, (-38, -55))
+next_next_right = Node(next_right, (-60, -60))
 
-def expand_node(node, graph, queue):
-  for each in graph[node]:
-    queue.push(each)
-
-
-# root = Node(None, -51, -51)
-# next_right = Node(root, -54, -55)
-# next_left = Node(root, -38, -55)
-# next_next_right = Node(next_right, -60, -60)
-
-# parent = next_next_right.return_parent()
-# print parent.x
+parent = next_next_right.return_parent()
+print parent.pixels
+print next_next_right.return_full_path()
