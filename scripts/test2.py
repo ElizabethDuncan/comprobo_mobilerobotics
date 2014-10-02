@@ -11,6 +11,9 @@ from nav_msgs.srv import GetMap
 
 rospy.wait_for_service("static_map")
 static_map = rospy.ServiceProxy("static_map", GetMap)
+mapinfo = static_map().map.info.origin
+print 'mapinfo: '
+print mapinfo
 try:
 	map1 = static_map().map
 except:
@@ -30,10 +33,16 @@ for i in range(2048):
 		if d == -1:
 			map_vis[i,k] = [128,128,128]
 		elif d == 0:
-			map_vis[i,k] = [0,0,0]
-		else:
-			print d
 			map_vis[i,k] = [255,255,255]
+		else:
+			#print d
+			map_vis[i,k] = [0,0,0]
+
+# make the origin red
+for i in range(1023,1026):
+	for k in range(1023,1026):
+		map_vis[i,k] = [255,0,0]
+
 #print map_vis
 #print data
 img = smp.toimage( map_vis )
