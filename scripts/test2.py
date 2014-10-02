@@ -9,17 +9,17 @@ from nav_msgs.srv import GetMap
 # run rosrun map_server map_serr /home/jackfan108/comprobo2014/mobile_robotics/starmap.yaml
 
 
-rospy.wait_for_service("static_map")
-static_map = rospy.ServiceProxy("static_map", GetMap)
-mapinfo = static_map().map.info.origin
-print 'mapinfo: '
-print mapinfo
-try:
-	map1 = static_map().map
-except:
-	print "error receiving map"
+# rospy.wait_for_service("static_map")
+# static_map = rospy.ServiceProxy("static_map", GetMap)
+# mapinfo = static_map().map.info.origin
+# print 'mapinfo: '
+# print mapinfo
+# try:
+# 	map1 = static_map().map
+# except:
+# 	print "error receiving map"
 
-pickle.dump( map1.data, open( "exampleArray2.p", "wb" ) )
+# pickle.dump( map1.data, open( "exampleArray2.p", "wb" ) )
 data = pickle.load( open( "exampleArray2.p", "rb" ) )
 print 'type of data is ' + str(type(data))
 print 'length of data is ' + str(len(data))
@@ -42,6 +42,12 @@ for i in range(2048):
 for i in range(1023,1026):
 	for k in range(1023,1026):
 		map_vis[i,k] = [255,0,0]
+
+x = 1323
+y = 1123
+for i in range(y, y+3):
+	for k in range(x, x+3):
+		map_vis[i,k] = [0,0,255]
 
 #print map_vis
 #print data

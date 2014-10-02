@@ -3,7 +3,7 @@ make of stating position of neato
 connect to neato
 roslaunch neato_2dnav hector_mapping_neato.launch
 rosrun rviz rviz
-rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+rosrun teleop_twist_keyboard teleop_twist_keyboard.p
 
 
 after getting complete map:
@@ -64,3 +64,5 @@ rospy.wait_for_service("static_map")
 shut off the neato by going to the file and then:
 ./shutdown_pi.sh 
 
+optimizaion:
+8 adjacent spots 4 distance 1.5 and 4 distance 1 so keep track of distance and determine how frequent to jump from one spot to another
