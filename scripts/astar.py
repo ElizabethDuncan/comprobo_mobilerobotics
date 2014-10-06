@@ -63,44 +63,12 @@ class MyPriorityQueue(PriorityQueue):
         _, _, item = PriorityQueue.get(self, *args, **kwargs)
         return item
 
-
 """
 
-DEPRECATED
-2nd implementation without using objects or recursion
-Trying to fix maximum recursion depth error
+A* Heuristic
+Finds the "as the crow flies" distance between a given node and the goal node
 
 """
-def astar(start, finish):
-  queue = deque([])
-  queue.append((start, []))
-  visited.add(start)
-  while queue:
-
-    node, path = queue.pop()
-
-    if node == finish:
-      return path
-
-    child_right = (node[0] + 1, node[1])
-    child_left = (node[0] - 1, node[1])
-    child_up = (node[0], node[1] + 1)
-    child_down = (node[0], node[1] - 1)
-    child_right_down = (node[0] + 1, node[1] - 1)
-    child_right_up = (node[0] + 1, node[1] + 1)
-    child_left_down = (node[0] - 1, node[1] - 1)
-    child_left_up = (node[0] - 1, node[1] + 1)
-
-    neighbors = [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
-
-
-    for neighbor in neighbors:
-      if neighbor not in visited:
-        visited.add(neighbor)
-        queue.append((neighbor, path + [node]))
-
-  return None
-
 def manhattan_distance(node):
 
   current_x = node.pixels[0]
