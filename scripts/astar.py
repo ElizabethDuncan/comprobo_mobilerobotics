@@ -4,7 +4,7 @@ from collections import deque
 visited = set()
 nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
-goal = (500, 500)
+goal = (50, 50)
 allie = 0
 
 class Node():
@@ -89,8 +89,7 @@ def expand_tree(node):
   
     # Check if current node is the goal node
     if node.pixels == goal:
-      print node.return_full_path()
-      exit()
+      break
 
     # Find the pixels of all the neighbors
     child_right = (node.pixels[0] + 1, node.pixels[1])
@@ -116,6 +115,9 @@ def expand_tree(node):
 
     node = nodesToExplore.popleft()
 
+  # Once breaking, return the full path of the goal node
+  return node.return_full_path()
+
     
 
 def make_tree(start_pixel):
@@ -124,7 +126,7 @@ def make_tree(start_pixel):
   root = Node(None, start_pixel)
 
   # Recursively expand the tree 
-  expand_tree(root)
+  return expand_tree(root)
       
 
 
