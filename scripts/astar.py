@@ -1,5 +1,7 @@
 #!/usr/bin/python
 from collections import deque
+from math import *
+from Queue import PriorityQueue
 
 visited = set()
 nodesToExplore = deque([])
@@ -33,6 +35,27 @@ class Node():
     constant = .05
     width = 102.4
     return (self.pixels[0] * constant - width, self.pixels[1] * constant - width)
+
+
+
+"""
+
+Priority Queue used for A* heuristic
+Returns the node with the lowest value first
+
+"""
+class MyPriorityQueue(PriorityQueue):
+    def __init__(self):
+        PriorityQueue.__init__(self)
+        self.counter = 0
+
+    def put(self, item, priority):
+        PriorityQueue.put(self, (priority, self.counter, item))
+        self.counter += 1
+
+    def get(self, *args, **kwargs):
+        _, _, item = PriorityQueue.get(self, *args, **kwargs)
+        return item
 
 
 """
@@ -72,7 +95,17 @@ def astar(start, finish):
 
   return None
 
-def manhattan_distance():
+def manhattan_distance(node):
+
+  current_x = node.pixels[0]
+  current_y = node.pixels[1]
+
+  goal_x = goal[0]
+  goal_y = goal[1]
+
+  distance = math.sqrt((goal_X - current_x) + (goal_y - current_y))
+
+
   pass
 
 
@@ -129,6 +162,19 @@ def make_tree(start_pixel):
   return expand_tree(root)
       
 
+0))
 
 
-print make_tree((0, 0))
+# print make_tree((0, 0))
+
+
+# Example text to run priority queue
+# root = Node(None, (0,0))
+# right = Node(root, (10, 1
+
+# queue = MyPriorityQueue()
+# queue.put(root, 3)
+# queue.put(right, 1)
+
+# print queue.get().pixels
+# print queue.get().pixels
