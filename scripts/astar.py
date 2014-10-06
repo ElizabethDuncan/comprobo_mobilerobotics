@@ -37,6 +37,7 @@ class Node():
 
 """
 
+DEPRECATED
 2nd implementation without using objects or recursion
 Trying to fix maximum recursion depth error
 
@@ -129,7 +130,3 @@ def make_tree(start_pixel):
 
 
 print make_tree((0, 0))
-
-# Call to alternate BFS implementation
-# root = Node((20, 20))
-#print astar((20, 20), (11, 20))
