@@ -4,7 +4,7 @@ from collections import deque
 visited = set()
 nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
-goal = (4, 5)
+goal = (500, 500)
 allie = 0
 
 class Node():
@@ -78,7 +78,7 @@ def manhattan_distance():
 """
 
 BFS implementation using the Node object
-Currently fails due to "maximum recursion depth" for anything farther away that 15 pixels
+Flattened - tested with goal 500 away x and y
 
 """
 
@@ -128,8 +128,8 @@ def make_tree(start_pixel):
 
 
 
-#print make_tree((20, 20))
+print make_tree((0, 0))
 
 # Call to alternate BFS implementation
 # root = Node((20, 20))
-print astar((20, 20), (11, 20))
+#print astar((20, 20), (11, 20))
