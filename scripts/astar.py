@@ -2,12 +2,18 @@
 from collections import deque
 import math
 from Queue import PriorityQueue
+import numpy as np
+import scipy.misc.pilutil as smp
+import pickle
+import rospy
+
+map_vis = pickle.load( open( "starMapCut.p", "rb" ) )
+map_info = pickle.load( open( "data2d.p", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
 goal = (2000, 2000)
-allie = 0
 
 class Node():
   def __init__(self, parent, pixels):
@@ -103,7 +109,7 @@ def manhattan_distance(node):
   goal_x = goal[0]
   goal_y = goal[1]
 
-  distance = math.sqrt((goal_x - current_x) + (goal_y - current_y))
+  distance = math.sqrt((goal_x - current_x)**2 + (goal_y - current_y)**2)
 
   return distance
 
@@ -141,7 +147,7 @@ def expand_tree(node):
     for current_pixel in surrounding_area:
       
       # Only add pixel is a child if it isn't visisted already
-      if current_pixel not in visited:
+      if current_pixel not in visited and not hitObstacle(current_pixel):
         # Create new node
         next = Node(node, current_pixel)
         visited.add(next.pixels)
@@ -170,6 +176,10 @@ def make_tree(start_pixel):
 
 print make_tree((0, 0))
 
+def hitObstacle(pixel):
+  if map_info[pixel[0]][pixel[1]] != 0:
+    return False
+  return True
 
 # Example text to run priority queue
 # root = Node(None, (0,0))
