@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import numpy as np
 import scipy.misc.pilutil as smp
 import pickle
@@ -8,21 +9,25 @@ from nav_msgs.srv import GetMap
 # run roscore
 # run rosrun map_server map_serr /home/jackfan108/comprobo2014/mobile_robotics/starmap.yaml
 
+# Also, make sure imagemagick is installed. Try:
+# sudo apt-get install imagemagick
 
-# rospy.wait_for_service("static_map")
-# static_map = rospy.ServiceProxy("static_map", GetMap)
-# mapinfo = static_map().map.info.origin
-# print 'mapinfo: '
-# print mapinfo
-# try:
-# 	map1 = static_map().map
-# except:
-# 	print "error receiving map"
+
+rospy.wait_for_service("static_map")
+static_map = rospy.ServiceProxy("static_map", GetMap)
+mapinfo = static_map().map.info.origin
+print 'mapinfo: '
+print mapinfo
+try:
+	map1 = static_map().map
+except:
+	print "error receiving map"
+data = map1.data
 
 # pickle.dump( map1.data, open( "exampleArray2.p", "wb" ) )
-data = pickle.load( open( "exampleArray2.p", "rb" ) )
-print 'type of data is ' + str(type(data))
-print 'length of data is ' + str(len(data))
+# data = pickle.load( open( "exampleArray2.p", "rb" ) )
+# print 'type of data is ' + str(type(data))
+# print 'length of data is ' + str(len(data))
 
 
 map_vis = np.zeros( (2048,2048,3), dtype=np.uint8)
