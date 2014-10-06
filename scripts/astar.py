@@ -4,13 +4,13 @@ from collections import deque
 visited = set()
 nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
-goal = (5, 5)
+goal = (4, 5)
 allie = 0
 
 class Node():
   def __init__(self, parent, pixels):
     self.pixels = pixels
-    #self.coords = convert_to_m(pixels)
+    # self.coords = convert_to_m(pixels)
     self.parent = parent
     if self.parent != None:
       self.parent.assign_child(self)
@@ -83,38 +83,39 @@ Currently fails due to "maximum recursion depth" for anything farther away that 
 """
 
 def expand_tree(node):
+
+  while True:
   
-  # Check if current node is the goal node
-  if node.pixels == goal:
-    print node.return_full_path()
-    exit()
+    # Check if current node is the goal node
+    if node.pixels == goal:
+      print node.return_full_path()
+      exit()
 
-  # Find the pixels of all the neighbors
-  child_right = (node.pixels[0] + 1, node.pixels[1])
-  child_left = (node.pixels[0] - 1, node.pixels[1])
-  child_up = (node.pixels[0], node.pixels[1] + 1)
-  child_down = (node.pixels[0], node.pixels[1] - 1)
-  child_right_down = (node.pixels[0] + 1, node.pixels[1] - 1)
-  child_right_up = (node.pixels[0] + 1, node.pixels[1] + 1)
-  child_left_down = (node.pixels[0] - 1, node.pixels[1] - 1)
-  child_left_up = (node.pixels[0] - 1, node.pixels[1] + 1)
+    # Find the pixels of all the neighbors
+    child_right = (node.pixels[0] + 1, node.pixels[1])
+    child_left = (node.pixels[0] - 1, node.pixels[1])
+    child_up = (node.pixels[0], node.pixels[1] + 1)
+    child_down = (node.pixels[0], node.pixels[1] - 1)
+    child_right_down = (node.pixels[0] + 1, node.pixels[1] - 1)
+    child_right_up = (node.pixels[0] + 1, node.pixels[1] + 1)
+    child_left_down = (node.pixels[0] - 1, node.pixels[1] - 1)
+    child_left_up = (node.pixels[0] - 1, node.pixels[1] + 1)
 
-  surrounding_area = [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
+    surrounding_area = [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
 
-  # Iterate through the neighbors
-  for current_pixel in surrounding_area:
+    # Iterate through the neighbors
+    for current_pixel in surrounding_area:
+      
+      # Only add pixel is a child if it isn't visisted already
+      if current_pixel not in visited:
+        # Create new node
+        next = Node(node, current_pixel)
+        visited.add(next.pixels)
+        nodesToExplore.append(next)
+
+    node = nodesToExplore.popleft()
+
     
-    # Only add pixel is a child if it isn't visisted already
-    if current_pixel not in visited:
-      # Create new node
-      next = Node(node, current_pixel)
-      visited.add(next.pixels)
-      nodesToExplore.append(next)
-
-  actual_next = nodesToExplore.popleft()
-  expand_tree(actual_next)
-    
-    #expand_tree(next)
 
 def make_tree(start_pixel):
   # Make star_pixel the root of the tree
@@ -127,8 +128,8 @@ def make_tree(start_pixel):
 
 
 
-print make_tree((20, 20))
+#print make_tree((20, 20))
 
 # Call to alternate BFS implementation
 # root = Node((20, 20))
-# print astar((20, 20), (11, 20))
+print astar((20, 20), (11, 20))
