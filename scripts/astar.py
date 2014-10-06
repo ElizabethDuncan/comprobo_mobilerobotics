@@ -1,12 +1,12 @@
 #!/usr/bin/python
 from collections import deque
-from math import *
+import math
 from Queue import PriorityQueue
 
 visited = set()
 nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
-goal = (50, 50)
+goal = (2000, 2000)
 allie = 0
 
 class Node():
@@ -103,10 +103,9 @@ def manhattan_distance(node):
   goal_x = goal[0]
   goal_y = goal[1]
 
-  distance = math.sqrt((goal_X - current_x) + (goal_y - current_y))
+  distance = math.sqrt((goal_x - current_x) + (goal_y - current_y))
 
-
-  pass
+  return distance
 
 
 """
@@ -117,6 +116,8 @@ Flattened - tested with goal 500 away x and y
 """
 
 def expand_tree(node):
+
+  priorityqueue = MyPriorityQueue()
 
   while True:
   
@@ -144,9 +145,11 @@ def expand_tree(node):
         # Create new node
         next = Node(node, current_pixel)
         visited.add(next.pixels)
-        nodesToExplore.append(next)
+        #nodesToExplore.append(next)
+        priorityqueue.put(next, manhattan_distance(next))
 
-    node = nodesToExplore.popleft()
+    #node = nodesToExplore.popleft()
+    node = priorityqueue.get()
 
   # Once breaking, return the full path of the goal node
   return node.return_full_path()
@@ -162,10 +165,10 @@ def make_tree(start_pixel):
   return expand_tree(root)
       
 
-0))
 
 
-# print make_tree((0, 0))
+
+print make_tree((0, 0))
 
 
 # Example text to run priority queue
