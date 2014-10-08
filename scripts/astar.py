@@ -8,12 +8,21 @@ import pickle
 import rospy
 
 map_vis = pickle.load( open( "starMapCut.p", "rb" ) )
-map_info = pickle.load( open( "data2d.p", "rb" ) )
+map_info = pickle.load( open( "map_info.p", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
-goal = (2000, 2000)
+start = (24,49)
+#start = (0,0)
+goal = (200, 200)
+
+
+
+def isFree(pixel):
+  if map_info[pixel[1]][pixel[0]] == 0:
+    return True
+  return False
 
 class Node():
   def __init__(self, parent, pixels):
@@ -94,11 +103,11 @@ def expand_tree(node):
   priorityqueue = MyPriorityQueue()
 
   while True:
-  
+    print node.pixels
     # Check if current node is the goal node
     if node.pixels == goal:
       break
-
+    print 'node.pixels',node.pixels
     # Find the pixels of all the neighbors
     child_right = (node.pixels[0] + 1, node.pixels[1])
     child_left = (node.pixels[0] - 1, node.pixels[1])
@@ -115,7 +124,7 @@ def expand_tree(node):
     for current_pixel in surrounding_area:
       
       # Only add pixel is a child if it isn't visisted already
-      if current_pixel not in visited and not hitObstacle(current_pixel):
+      if current_pixel not in visited and isFree(current_pixel):
         # Create new node
         next = Node(node, current_pixel)
         visited.add(next.pixels)
@@ -130,24 +139,42 @@ def expand_tree(node):
 
     
 
+def paint_point((x,y),data,color):
+  for i in range(y-1, y+2):
+    for k in range(x-1, x+2):
+      data[i,k] = color
+  return data
+
+
 def make_tree(start_pixel):
   # Make star_pixel the root of the tree
-  # start_pixels is a tuple (x, y)
+  # start_pixels is a tuple (x, y)c
   root = Node(None, start_pixel)
 
   # Recursively expand the tree 
   return expand_tree(root)
       
+path = make_tree(start)
+print 'done with search'
+print 'goal',goal
+print 'start',start
+print path
+for i in path:
+  map_info[i[1]][i[0]] = 2
+  map_vis[i[1],i[0]] = [0,255,0]
+
+map_vis = paint_point(start, map_vis, [0,0,255])
+map_vis = paint_point(goal, map_vis, [255,0,0])
+
+img = smp.toimage( map_vis )
+img.show()
+flag = True
+while flag == True:
+  continue
+
+#print make_tree((0, 0))
 
 
-
-
-print make_tree((0, 0))
-
-def hitObstacle(pixel):
-  if map_info[pixel[0]][pixel[1]] != 0:
-    return False
-  return True
 
 # Example text to run priority queue
 # root = Node(None, (0,0))
