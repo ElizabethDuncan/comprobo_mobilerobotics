@@ -12,9 +12,7 @@ map_info = pickle.load( open( "map_info.p", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
-# Farthest possible goal without recursion failure
 start = (24,49)
-#start = (0,0)
 goal = (200, 200)
 
 
@@ -93,6 +91,27 @@ def manhattan_distance(node):
 
 """
 
+Get surrounding pixels (+/- 1) for a given x, y
+
+"""
+
+def get_surrounding_pixels(location):
+  # Find the pixels of all the neighbors
+  child_right = (location[0] + 1, location[1])
+  child_left = (location[0] - 1, location[1])
+  child_up = (location[0], location[1] + 1)
+  child_down = (location[0], location[1] - 1)
+  child_right_down = (location[0] + 1, location[1] - 1)
+  child_right_up = (location[0] + 1, location[1] + 1)
+  child_left_down = (location[0] - 1, location[1] - 1)
+  child_left_up = (location[0] - 1, location[1] + 1)
+
+  return [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
+
+
+
+"""
+
 BFS implementation using the Node object
 Flattened - tested with goal 500 away x and y
 
@@ -108,19 +127,10 @@ def expand_tree(node):
     if node.pixels == goal:
       break
     print 'node.pixels',node.pixels
-    # Find the pixels of all the neighbors
-    child_right = (node.pixels[0] + 1, node.pixels[1])
-    child_left = (node.pixels[0] - 1, node.pixels[1])
-    child_up = (node.pixels[0], node.pixels[1] + 1)
-    child_down = (node.pixels[0], node.pixels[1] - 1)
-    child_right_down = (node.pixels[0] + 1, node.pixels[1] - 1)
-    child_right_up = (node.pixels[0] + 1, node.pixels[1] + 1)
-    child_left_down = (node.pixels[0] - 1, node.pixels[1] - 1)
-    child_left_up = (node.pixels[0] - 1, node.pixels[1] + 1)
 
-    surrounding_area = [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
-
-    # Iterate through the neighbors
+    surrounding_area = get_surrounding_pixels(node.pixels)
+    
+    # Iterate through the all 8 pixels around the current x, y point
     for current_pixel in surrounding_area:
       
       # Only add pixel is a child if it isn't visisted already
@@ -153,36 +163,24 @@ def make_tree(start_pixel):
 
   # Recursively expand the tree 
   return expand_tree(root)
-      
-path = make_tree(start)
-print 'done with search'
-print 'goal',goal
-print 'start',start
-print path
-for i in path:
-  map_info[i[1]][i[0]] = 2
-  map_vis[i[1],i[0]] = [0,255,0]
+  
 
-map_vis = paint_point(start, map_vis, [0,0,255])
-map_vis = paint_point(goal, map_vis, [255,0,0])
+if __name__ == '__main__':
 
-img = smp.toimage( map_vis )
-img.show()
-flag = True
-while flag == True:
-  continue
+  path = make_tree(start)
+  print 'done with search'
+  print 'goal',goal
+  print 'start',start
+  print path
+  for i in path:
+    map_info[i[1]][i[0]] = 2
+    map_vis[i[1],i[0]] = [0,255,0]
 
-#print make_tree((0, 0))
+  map_vis = paint_point(start, map_vis, [0,0,255])
+  map_vis = paint_point(goal, map_vis, [255,0,0])
 
-
-
-# Example text to run priority queue
-# root = Node(None, (0,0))
-# right = Node(root, (10, 1
-
-# queue = MyPriorityQueue()
-# queue.put(root, 3)
-# queue.put(right, 1)
-
-# print queue.get().pixels
-# print queue.get().pixels
+  img = smp.toimage( map_vis )
+  img.show()
+  flag = True
+  while flag == True:
+    continue
