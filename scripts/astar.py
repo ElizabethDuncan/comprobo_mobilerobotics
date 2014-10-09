@@ -14,7 +14,7 @@ visited = set()
 nodesToExplore = deque([])
 start = (24,49)
 #$goal = (80 ,84)
-goal = (330, 165)
+goal = (250, 200)
 
 
 
@@ -120,10 +120,10 @@ def get_surrounding_pixels(location):
   child_left = ((location[0] - 1, location[1]), 1)
   child_up = ((location[0], location[1] + 1), 1)
   child_down = ((location[0], location[1] - 1), 1)
-  child_right_down = ((location[0] + 1, location[1] - 1), 1.414)
-  child_right_up = ((location[0] + 1, location[1] + 1), 1.414)
-  child_left_down = ((location[0] - 1, location[1] - 1), 1.414)
-  child_left_up = ((location[0] - 1, location[1] + 1), 1.414)
+  child_right_down = ((location[0] + 1, location[1] - 1), math.sqrt(2))
+  child_right_up = ((location[0] + 1, location[1] + 1), math.sqrt(2))
+  child_left_down = ((location[0] - 1, location[1] - 1), math.sqrt(2))
+  child_left_up = ((location[0] - 1, location[1] + 1), math.sqrt(2) )
 
   return [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
 
