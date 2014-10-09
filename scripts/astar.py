@@ -13,12 +13,8 @@ map_info = pickle.load( open( "map_info.p", "rb" ) )
 visited = set()
 nodesToExplore = deque([])
 start = (24,49)
-<<<<<<< HEAD
-#start = (0,0)
 goal = (330, 165)
-=======
-goal = (200, 200)
->>>>>>> d658c32989211617f9622ad2c95be1dcc07c61a2
+
 
 
 
