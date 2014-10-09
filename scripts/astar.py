@@ -15,7 +15,7 @@ nodesToExplore = deque([])
 # Farthest possible goal without recursion failure
 start = (24,49)
 #start = (0,0)
-goal = (200, 200)
+goal = (330, 165)
 
 
 
