@@ -12,10 +12,10 @@ map_info = pickle.load( open( "map_info.p", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
-# Farthest possible goal without recursion failure
 start = (24,49)
-#start = (0,0)
-goal = (200, 200)
+#$goal = (80 ,84)
+goal = (250, 200)
+
 
 
 
@@ -25,13 +25,17 @@ def isFree(pixel):
   return False
 
 class Node():
-  def __init__(self, parent, pixels):
+  def __init__(self, parent, pixels, value=None):
     self.pixels = pixels
     # self.coords = convert_to_m(pixels)
     self.parent = parent
     if self.parent != None:
       self.parent.assign_child(self)
     self.children = []
+    self.value = value
+
+  def set_value(self, distance):
+    self.value = distance + self.parent.value
 
   def return_parent(self):
     return self.parent
@@ -59,18 +63,18 @@ Priority Queue used for A* heuristic
 Returns the node with the lowest value first
 
 """
-class MyPriorityQueue(PriorityQueue):
-    def __init__(self):
-        PriorityQueue.__init__(self)
-        self.counter = 0
+# class MyPriorityQueue(PriorityQueue):
+#     def __init__(self):
+#         PriorityQueue.__init__(self)
+#         self.counter = 0
 
-    def put(self, item, priority):
-        PriorityQueue.put(self, (priority, self.counter, item))
-        self.counter += 1
+#     def put(self, item, priority):
+#         PriorityQueue.put(self, (priority, self.counter, item))
+#         self.counter += 1
 
-    def get(self, *args, **kwargs):
-        _, _, item = PriorityQueue.get(self, *args, **kwargs)
-        return item
+#     def get(self, *args, **kwargs):
+#         _, _, item = PriorityQueue.get(self, *args, **kwargs)
+#         return item
 
 """
 
@@ -90,6 +94,40 @@ def manhattan_distance(node):
 
   return distance
 
+"""
+
+A* Heuristic2
+Finds the "as the crow flies" distance between a given node and the goal node
+
+"""
+def edge_weight_distance(value):
+  #print value
+  current_value = value
+
+  return current_value + 1
+
+
+"""
+
+Get surrounding pixels (+/- 1) for a given x, y
+Return a list of tuples of (a tuple for coordinate, distance value)
+
+"""
+
+def get_surrounding_pixels(location):
+  # Find the pixels of all the neighbors
+  child_right = ((location[0] + 1, location[1]), 1)
+  child_left = ((location[0] - 1, location[1]), 1)
+  child_up = ((location[0], location[1] + 1), 1)
+  child_down = ((location[0], location[1] - 1), 1)
+  child_right_down = ((location[0] + 1, location[1] - 1), math.sqrt(2))
+  child_right_up = ((location[0] + 1, location[1] + 1), math.sqrt(2))
+  child_left_down = ((location[0] - 1, location[1] - 1), math.sqrt(2))
+  child_left_up = ((location[0] - 1, location[1] + 1), math.sqrt(2) )
+
+  return [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
+
+
 
 """
 
@@ -100,39 +138,29 @@ Flattened - tested with goal 500 away x and y
 
 def expand_tree(node):
 
-  priorityqueue = MyPriorityQueue()
-
+  priorityqueue = PriorityQueue()
   while True:
-    print node.pixels
     # Check if current node is the goal node
     if node.pixels == goal:
       break
-    print 'node.pixels',node.pixels
-    # Find the pixels of all the neighbors
-    child_right = (node.pixels[0] + 1, node.pixels[1])
-    child_left = (node.pixels[0] - 1, node.pixels[1])
-    child_up = (node.pixels[0], node.pixels[1] + 1)
-    child_down = (node.pixels[0], node.pixels[1] - 1)
-    child_right_down = (node.pixels[0] + 1, node.pixels[1] - 1)
-    child_right_up = (node.pixels[0] + 1, node.pixels[1] + 1)
-    child_left_down = (node.pixels[0] - 1, node.pixels[1] - 1)
-    child_left_up = (node.pixels[0] - 1, node.pixels[1] + 1)
 
-    surrounding_area = [child_right, child_left, child_up, child_down, child_right_down, child_right_up, child_left_up, child_left_down]
-
-    # Iterate through the neighbors
+    surrounding_area = get_surrounding_pixels(node.pixels)
+    
+    # Iterate through the all 8 pixels around the current x, y point
     for current_pixel in surrounding_area:
       
       # Only add pixel is a child if it isn't visisted already
-      if current_pixel not in visited and isFree(current_pixel):
+      if current_pixel[0] not in visited and isFree(current_pixel[0]):
         # Create new node
-        next = Node(node, current_pixel)
+        #weight = edge_weight_distance(node.value)
+        next = Node(node, current_pixel[0])
+        next.set_value(current_pixel[1])
         visited.add(next.pixels)
         #nodesToExplore.append(next)
-        priorityqueue.put(next, manhattan_distance(next))
+        next = priorityqueue.put((next, next.value))
 
     #node = nodesToExplore.popleft()
-    node = priorityqueue.get()
+    node = priorityqueue.get()[0]
 
   # Once breaking, return the full path of the goal node
   return node.return_full_path()
@@ -149,40 +177,28 @@ def paint_point((x,y),data,color):
 def make_tree(start_pixel):
   # Make star_pixel the root of the tree
   # start_pixels is a tuple (x, y)c
-  root = Node(None, start_pixel)
+  root = Node(None, start_pixel, 1)
 
   # Recursively expand the tree 
   return expand_tree(root)
-      
-path = make_tree(start)
-print 'done with search'
-print 'goal',goal
-print 'start',start
-print path
-for i in path:
-  map_info[i[1]][i[0]] = 2
-  map_vis[i[1],i[0]] = [0,255,0]
+  
 
-map_vis = paint_point(start, map_vis, [0,0,255])
-map_vis = paint_point(goal, map_vis, [255,0,0])
+if __name__ == '__main__':
+  print 'calculating path...'
+  path = make_tree(start)
+  print 'done with search'
+  print 'goal',goal
+  print 'start',start
+  #print path
+  for i in path:
+    map_info[i[1]][i[0]] = 2
+    map_vis[i[1],i[0]] = [0,255,0]
 
-img = smp.toimage( map_vis )
-img.show()
-flag = True
-while flag == True:
-  continue
+  map_vis = paint_point(start, map_vis, [0,0,255])
+  map_vis = paint_point(goal, map_vis, [255,0,0])
 
-#print make_tree((0, 0))
-
-
-
-# Example text to run priority queue
-# root = Node(None, (0,0))
-# right = Node(root, (10, 1
-
-# queue = MyPriorityQueue()
-# queue.put(root, 3)
-# queue.put(right, 1)
-
-# print queue.get().pixels
-# print queue.get().pixels
+  img = smp.toimage( map_vis )
+  img.show()
+  flag = True
+  while flag == True:
+    continue
