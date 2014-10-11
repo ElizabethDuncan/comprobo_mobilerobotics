@@ -7,8 +7,8 @@ import scipy.misc.pilutil as smp
 import pickle
 import rospy
 
-map_vis = pickle.load( open( "starMapCut.p", "rb" ) )
-map_info = pickle.load( open( "map_info.p", "rb" ) )
+map_vis = pickle.load( open( "starMapCutBuffer.p", "rb" ) )
+map_info = pickle.load( open( "map_info.Bufferp", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
