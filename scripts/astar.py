@@ -181,11 +181,17 @@ def make_tree(start_pixel):
 
   # Recursively expand the tree 
   return expand_tree(root)
-  
+
+
+def get_pixel_list():
+  path = make_tree(start)
+  return path[::-1]
 
 if __name__ == '__main__':
+  get_pixel_list()
   print 'calculating path...'
   path = make_tree(start)
+  print path
   print 'done with search'
   print 'goal',goal
   print 'start',start
