@@ -20,14 +20,14 @@ xlen = xmax - xmin
 ylen = ymax - ymin
 
 
-def create_robot_origin(origin):
+def create_robot_origin(origin, map_vis):
 	x = origin[0]
 	y = origin[1]
 	for i in range(y, y+3):
 		for k in range(x, x+3):
 			map_vis[i,k] = blue
 
-def create_robot_goal(goal):
+def create_robot_goal(goal, map_vis):
 	x = goal[0]
 	y = goal[1]
 	for i in range(y, y+3):
@@ -74,8 +74,8 @@ if __name__ == '__main__':
 	files = open_files()
 	map_vis = files[0]
 	map_info = files[1]
-	#create_robot_goal(goal)
-	#create_robot_origin(origin)
+	create_robot_goal(goal, map_vis)
+	create_robot_origin(origin, map_vis)
 	map_info, map_vis = mapBuffer(map_info, map_vis)
 
 	#map_info = mapBuffer(map_info, map_vis)[0]
