@@ -48,9 +48,9 @@ def mapBuffer(map_info, map_vis):
 					for l in range(-5,6):
 						map_info[j+k][i+l] = 3
 						map_vis[j+k][i+l] = [255,0,255]
-	return (map_info, map_vis)
+	return map_info, map_vis
 
-def store_changes(map_vis, map_info):
+def store_changes(map_info, map_vis):
 	pickle.dump( map_vis, open( "starMapCut.p", "wb" ) )
 	pickle.dump( map_info, open ( "map_info.p", "wb" ) )
 
@@ -76,9 +76,10 @@ if __name__ == '__main__':
 	map_info = files[1]
 	#create_robot_goal(goal)
 	#create_robot_origin(origin)
+	map_info, map_vis = mapBuffer(map_info, map_vis)
 
-	map_info = mapBuffer(map_info, map_vis)[0]
-	map_vis = mapBuffer(map_info, map_vis)[1]
+	#map_info = mapBuffer(map_info, map_vis)[0]
+	#map_vis = mapBuffer(map_info, map_vis)[1]
 
 	store_changes(map_info, map_vis)
 
