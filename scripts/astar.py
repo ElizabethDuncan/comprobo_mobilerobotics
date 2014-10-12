@@ -8,13 +8,13 @@ import pickle
 import rospy
 
 map_vis = pickle.load( open( "starMapCutBuffer.p", "rb" ) )
-map_info = pickle.load( open( "map_info.Bufferp", "rb" ) )
+map_info = pickle.load( open( "map_info_Buffer.p", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
 start = (24,49)
-#$goal = (80 ,84)
-goal = (250, 200)
+#goal = (80 ,84)
+goal = (235, 180)
 
 
 
@@ -137,7 +137,6 @@ Flattened - tested with goal 500 away x and y
 """
 
 def expand_tree(node):
-
   priorityqueue = PriorityQueue()
   while True:
     # Check if current node is the goal node
@@ -189,9 +188,10 @@ def get_pixel_list():
   return path[::-1]
 
 if __name__ == '__main__':
-  path = get_pixel_list()
-  #print 'calculating path...'
-  #path = make_tree(start)
+  #path = get_pixel_list()
+  #print path
+  print 'calculating path...'
+  path = make_tree(start)
   print path
   print 'done with search'
   print 'goal',goal

@@ -14,12 +14,12 @@ xmax = 1410
 ymax = 1205
 
 origin = (1024-xmin, 1024-ymin)
-goal = (205, 115)
+goal = (235, 180)
 
 xlen = xmax - xmin
 ylen = ymax - ymin
 
-BUFFER = 2
+BUFFER = 9
 
 def create_robot_origin(origin, map_vis):
 	x = origin[0]
