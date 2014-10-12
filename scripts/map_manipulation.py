@@ -19,6 +19,7 @@ goal = (205, 115)
 xlen = xmax - xmin
 ylen = ymax - ymin
 
+# change this buffer 
 BUFFER = 2
 
 def create_robot_origin(origin, map_vis):
