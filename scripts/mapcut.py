@@ -48,11 +48,4 @@ while flag == True:
 	#name = raw_input("Please enter file name you want to save as(pickle file): ")
 	flag = False
 
-img = smp.toimage( map_vis )
-img.show()
-flag = True
-while flag == True:
-	continue
-
-
 #pickle.dump( map_vis, open( name + '.p', "wb" ) )

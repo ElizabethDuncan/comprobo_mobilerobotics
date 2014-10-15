@@ -7,17 +7,18 @@ import scipy.misc.pilutil as smp
 import pickle
 import rospy
 
-map_vis = pickle.load( open( "starMapCutBuffer.p", "rb" ) )
-map_info = pickle.load( open( "map_info_Buffer.p", "rb" ) )
+map_vis = pickle.load( open( "starMapCut.p", "rb" ) )
+map_info = pickle.load( open( "map_info.p", "rb" ) )
 
 visited = set()
 nodesToExplore = deque([])
 start = (24,49)
-#goal = (80 ,84)
-goal = (235, 180)
+#$goal = (80 ,84)
+goal = (250, 200)
 
 
-
+def mapBuffer(map_info, map_vis):
+  for i in map_info
 
 def isFree(pixel):
   if map_info[pixel[1]][pixel[0]] == 0:
@@ -137,6 +138,7 @@ Flattened - tested with goal 500 away x and y
 """
 
 def expand_tree(node):
+
   priorityqueue = PriorityQueue()
   while True:
     # Check if current node is the goal node
@@ -181,18 +183,39 @@ def make_tree(start_pixel):
   # Recursively expand the tree 
   return expand_tree(root)
 
+def setup_gui():
+  root = Tk()
 
-def get_pixel_list():
-  path = make_tree(start)
-  #print path
-  return path[::-1]
+  #setting up a tkinter canvas ((((with scrollbars))))
+  frame = Frame(root, bd=2, relief=SUNKEN)
+  frame.grid_rowconfigure(0, weight=1)
+  frame.grid_columnconfigure(0, weight=1)
+  #xscroll = Scrollbar(frame, orient=HORIZONTAL)
+  #xscroll.grid(row=1, column=0, sticky=E+W)
+  #yscroll = Scrollbar(frame)
+  #yscroll.grid(row=0, column=1, sticky=N+S)
+  #canvas = Canvas(frame, bd=0, xscrollcommand=xscroll.set, yscrollcommand=yscroll.set)
+  canvas = Canvas(frame, bd=0)
+  canvas.grid(row=0, column=0, sticky=N+S+E+W)
+  #xscroll.config(command=canvas.xview)
+  #yscroll.config(command=canvas.yview)
+  frame.pack(fill=BOTH,expand=1)
+  return root
+
+def reset():
+    img = ImageTk.PhotoImage(smp.toimage( map_vis ))
+    #-------------------------------------------------
+    canvas.create_image(0,0,image=img,anchor="nw")
+
+def mouseClick(event):
+  global goal
+  goal = (event.x, event.y)
+  resetGoal
 
 if __name__ == '__main__':
-  #path = get_pixel_list()
-  #print path
+  root = setup_gui()
   print 'calculating path...'
   path = make_tree(start)
-  print path
   print 'done with search'
   print 'goal',goal
   print 'start',start
@@ -203,9 +226,13 @@ if __name__ == '__main__':
 
   map_vis = paint_point(start, map_vis, [0,0,255])
   map_vis = paint_point(goal, map_vis, [255,0,0])
+  
 
-  img = smp.toimage( map_vis )
-  img.show()
-  flag = True
-  while flag == True:
-    continue
+  canvas.bind("<Button 1>",mouseClick)
+  root.mainloop()
+
+  # img = smp.toimage( map_vis )
+  # img.show()
+  # flag = True
+  # while flag == True:
+  #   continue

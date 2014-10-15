@@ -11,6 +11,7 @@ from nav_msgs.msg import Odometry
 import tf
 from tf.transformations import euler_from_quaternion
 import matplotlib.pyplot as plt
+import map_manipulation
 
 class Follow_Path:
 	def __init__(self):
@@ -57,6 +58,12 @@ class Follow_Path:
 		if self.directed_angle > 180:
 			self.directed_angle = -(360 - self.directed_angle)
 		print distance, vector_orientation, self.vector_goal, self.directed_angle, self.current_ind
+		"""
+		print self.pixels
+		data = map_manipulation.open_files()
+		map_vis = astar.paint_point(self.pixels, data[0], [0, 225, 0])
+		img = smp.toimage( map_vis )
+  		img.show() """
 
 	def odom_received(self, odom_data):
 		orient = odom_data.pose.pose.orientation

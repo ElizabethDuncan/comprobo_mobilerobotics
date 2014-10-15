@@ -14,11 +14,12 @@ xmax = 1410
 ymax = 1205
 
 origin = (1024-xmin, 1024-ymin)
-goal = (205, 115)
+goal = (235, 180)
 
 xlen = xmax - xmin
 ylen = ymax - ymin
 
+BUFFER = 9
 
 def create_robot_origin(origin, map_vis):
 	x = origin[0]
@@ -44,15 +45,16 @@ def mapBuffer(map_info, map_vis):
 	for i in range(xlen):
 		for j in range(ylen):
 			if map_info[j][i] == 1:
-				for k in range(-5,6):
-					for l in range(-5,6):
-						map_info[j+k][i+l] = 3
-						map_vis[j+k][i+l] = [255,0,255]
+				for k in range(-BUFFER,BUFFER+1):
+					for l in range(-BUFFER,BUFFER+1):
+						if 0 < j+k < ylen and 0 < i+l < xlen:
+							map_info[j+k][i+l] = 3
+							map_vis[j+k][i+l] = [255,0,255]
 	return map_info, map_vis
 
 def store_changes(map_info, map_vis):
-	pickle.dump( map_vis, open( "starMapCut.p", "wb" ) )
-	pickle.dump( map_info, open ( "map_info.p", "wb" ) )
+	pickle.dump( map_vis, open( "starMapCutBuffer.p", "wb" ) )
+	pickle.dump( map_info, open ( "map_info_Buffer.p", "wb" ) )
 
 def open_files():
 	map_vis = pickle.load( open( "starMapCut.p", "rb" ) )
