@@ -181,6 +181,15 @@ def make_tree(start_pixel):
   # Recursively expand the tree 
   return expand_tree(root)
 
+def mapflip(map_vis,map_info):
+  map_vis2 = []
+  map_info2 = []
+  for i in map_vis:
+    map_vis2.insert(0,i)
+  for i in map_info:
+    map_info2.insert(0,i)
+  return map_vis2, map_info2
+
 
 def get_pixel_list():
   path = make_tree(start)
@@ -204,6 +213,9 @@ if __name__ == '__main__':
   map_vis = paint_point(start, map_vis, [0,0,255])
   map_vis = paint_point(goal, map_vis, [255,0,0])
 
+  #map_vis.reverse()
+  map_vis, map_info = mapflip(map_vis, map_info)
+  print type(map_vis),type(map_info)
   img = smp.toimage( map_vis )
   img.show()
   flag = True
