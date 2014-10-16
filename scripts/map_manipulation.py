@@ -14,7 +14,7 @@ xmax = 1410
 ymax = 1205
 
 origin = (1024-xmin, 1024-ymin)
-goal = (205, 115)
+goal = (235, 180)
 
 xlen = xmax - xmin
 ylen = ymax - ymin
