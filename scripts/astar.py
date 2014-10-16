@@ -169,7 +169,7 @@ def expand_tree(node):
 def paint_point((x,y),data,color):
   for i in range(y-1, y+2):
     for k in range(x-1, x+2):
-      data[i,k] = color
+      data[i][k] = color
   return data
 
 
