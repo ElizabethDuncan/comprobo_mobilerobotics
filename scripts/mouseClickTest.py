@@ -9,20 +9,6 @@ import rospy
 from map_manipulation import *
 from astar import *
 
-#function to be called when mouse is clicked
-def printcoords(event):
-    #outputting x and y coords to console
-    canvas.delete('image')
-    #create_robot_goal((3,3), map_vis)
-    #create_robot_origin((5,5), map_vis)
-    #img = ImageTk.PhotoImage(smp.toimage( map_vis ))
-    #canvas.create_image(0,0,image=img,anchor="nw",tag='image')
-    
-    canvas.create_image(0,0,image=img,anchor="nw",tag='image')
-    canvas.create_line(0, 100, 200, 0, fill="blue", dash=(4, 4))
-    root.update()
-    print (event.x,event.y)
-
 if __name__ == "__main__":
     root = Tk()
 
@@ -56,10 +42,22 @@ if __name__ == "__main__":
     img = ImageTk.PhotoImage(smp.toimage( map_vis ))
     img2 = ImageTk.PhotoImage(smp.toimage( map_vis ))
     #-------------------------------------------------
-    #canvas.create_image(0,0,image=img,anchor="nw",tag='image')
+    canvas.create_image(0,0,image=img,anchor="nw",tag='image')
     #canvas.config(scrollregion=canvas.bbox(ALL))
 
-
+    #function to be called when mouse is clicked
+    def printcoords(event):
+        #outputting x and y coords to console
+        #canvas.delete('image')
+        #create_robot_goal((3,3), map_vis)
+        #create_robot_origin((5,5), map_vis)
+        #img = ImageTk.PhotoImage(smp.toimage( map_vis ))
+        #canvas.create_image(0,0,image=img,anchor="nw",tag='image')
+        
+        #canvas.create_image(0,0,image=img2,anchor="nw",tag='image')
+        #canvas.create_line(0, 100, 200, 0, fill="blue", dash=(4, 4))
+        #root.update()
+        print (event.x,event.y)
     #mouseclick event
     canvas.bind("<Button 1>",printcoords)
 

@@ -20,20 +20,20 @@ xlen = xmax - xmin
 ylen = ymax - ymin
 
 # change this buffer 
-BUFFER = 2
+BUFFER = 7
 
 def create_robot_origin(origin, map_vis):
 	x = origin[0]
 	y = origin[1]
-	for i in range(y, y+3):
-		for k in range(x, x+3):
+	for i in range(y, y+4):
+		for k in range(x, x+4):
 			map_vis[i,k] = blue
 
 def create_robot_goal(goal, map_vis):
 	x = goal[0]
 	y = goal[1]
-	for i in range(y, y+3):
-		for k in range(x, x+3):
+	for i in range(y, y+4):
+		for k in range(x, x+4):
 			map_vis[i,k] = red
 
 

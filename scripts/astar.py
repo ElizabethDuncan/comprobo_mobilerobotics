@@ -13,12 +13,11 @@ map_info = pickle.load( open( "map_info_Buffer.p", "rb" ) )
 visited = set()
 nodesToExplore = deque([])
 start = (24,49)
-#goal = (80 ,84)
 goal = (235, 180)
 
 
 
-
+#the function we wrote to check whether a pixel is free for the neato to navigate to
 def isFree(pixel):
   if map_info[pixel[1]][pixel[0]] == 0:
     return True
@@ -151,7 +150,6 @@ def expand_tree(node):
       # Only add pixel is a child if it isn't visisted already
       if current_pixel[0] not in visited and isFree(current_pixel[0]):
         # Create new node
-        #weight = edge_weight_distance(node.value)
         next = Node(node, current_pixel[0])
         next.set_value(current_pixel[1])
         visited.add(next.pixels)
@@ -165,7 +163,7 @@ def expand_tree(node):
   return node.return_full_path()
 
     
-
+# paints a given point and its surrounding 8 pixels on the map(painting 1 pixel is not visible to the eyes)
 def paint_point((x,y),data,color):
   for i in range(y-1, y+2):
     for k in range(x-1, x+2):
@@ -181,6 +179,7 @@ def make_tree(start_pixel):
   # Recursively expand the tree 
   return expand_tree(root)
 
+# mirrors the function to the x axis such that it's at the right orientation
 def mapflip(map_vis,map_info):
   map_vis2 = []
   map_info2 = []
@@ -203,9 +202,8 @@ if __name__ == '__main__':
   path = make_tree(start)
   print path
   print 'done with search'
-  print 'goal',goal
-  print 'start',start
-  #print path
+  print 'goal: ',goal
+  print 'start: ',start
   for i in path:
     map_info[i[1]][i[0]] = 2
     map_vis[i[1],i[0]] = [0,255,0]
@@ -213,9 +211,8 @@ if __name__ == '__main__':
   map_vis = paint_point(start, map_vis, [0,0,255])
   map_vis = paint_point(goal, map_vis, [255,0,0])
 
-  #map_vis.reverse()
   map_vis, map_info = mapflip(map_vis, map_info)
-  print type(map_vis),type(map_info)
+  # diplay a static image 
   img = smp.toimage( map_vis )
   img.show()
   flag = True
